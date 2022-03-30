@@ -1,41 +1,68 @@
 <template>
-  <input type="text" @change="addToList" v-model="text">
+<div class="todo-list">
+  <h1>Todo-List</h1>
+  <input class="text-field" type="text" @change="addToList" v-model="text" />
   <ul>
-      <li v-for="(item, index) in list" :key="index">
-          <span>{{item}}</span>
-          <span @click="deleteFromList(index)"> || delete</span>
-      </li>
+    <li v-for="(item, index) in list" :key="index">
+      <span>{{ item }}</span>
+      <span @click="deleteFromList(index)">delete</span>
+    </li>
   </ul>
+</div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            list: [],
-            text: ''
-        }
+  data() {
+    return {
+      list: [],
+      text: "",
+    };
+  },
+  created() {
+    this.list = JSON.parse(localStorage.getItem("list")) || [];
+  },
+  methods: {
+    addToList() {
+      this.list.unshift(this.text);
+      this.updateLocalStorage();
+      this.text = "";
     },
-    created() {
-        this.list = JSON.parse(localStorage.getItem('list')) || [];
+    deleteFromList(index) {
+      this.list.splice(index, 1);
+      this.updateLocalStorage();
     },
-    methods: {
-        addToList() {
-            this.list.unshift(this.text);
-            this.updateLocalStorage();
-            this.text = '';
-        },
-        deleteFromList(index) {
-            this.list.splice(index, 1);
-            this.updateLocalStorage();
-        },
-        updateLocalStorage() {
-            localStorage.setItem('list', JSON.stringify(this.list));
-        }
-    }
-}
+    updateLocalStorage() {
+      localStorage.setItem("list", JSON.stringify(this.list));
+    },
+  },
+};
 </script>
 
 <style>
+    .todo-list {
+        max-width: 500px;
+        margin: auto;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .text-field {
+        width: 100%;
+        height: 35px;
+        margin-bottom: 15px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        display: flex;
+        justify-content: space-between;
+    }
 
 </style>
