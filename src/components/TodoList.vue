@@ -15,9 +15,13 @@ export default {
             text: ''
         }
     },
+    created() {
+        this.list = JSON.parse(localStorage.getItem('list')) || [];
+    },
     methods: {
         addToList() {
             this.list.unshift(this.text);
+            localStorage.setItem('list', JSON.stringify(this.list));
             this.text = '';
         }
     }
