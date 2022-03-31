@@ -6,7 +6,7 @@
     <li v-for="(item, index) in list" :key="index">
       <span @click="toggleCheckbox(item)">
           <input type="checkbox" :checked="item.done">    
-          {{ item.label }}
+          <span :class="{'done' : item.done}">{{item.label}}</span>
       </span>
       <span @click="deleteFromList(index)">delete</span>
     </li>
@@ -70,6 +70,10 @@ export default {
     li {
         display: flex;
         justify-content: space-between;
+    }
+
+    .done {
+        text-decoration: line-through;
     }
 
 </style>
