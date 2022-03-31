@@ -4,7 +4,10 @@
   <input class="text-field" type="text" @change="addToList" v-model="text" />
   <ul>
     <li v-for="(item, index) in list" :key="index">
-      <span>{{ item }}</span>
+      <span @click="toggleCheckbox(item)">
+          <input type="checkbox" :checked="item.done">    
+          {{ item.label }}
+      </span>
       <span @click="deleteFromList(index)">delete</span>
     </li>
   </ul>
@@ -24,7 +27,7 @@ export default {
   },
   methods: {
     addToList() {
-      this.list.unshift(this.text);
+      this.list.unshift({label: this.text, done: false});
       this.updateLocalStorage();
       this.text = "";
     },
@@ -35,6 +38,10 @@ export default {
     updateLocalStorage() {
       localStorage.setItem("list", JSON.stringify(this.list));
     },
+    toggleCheckbox(item) {
+        item.done = !item.done; 
+        this.updateLocalStorage();  
+    }
   },
 };
 </script>
